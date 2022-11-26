@@ -37,7 +37,7 @@ if __name__ == '__main__':
     # We have gotten to a profile
     driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div[2]/button[9]').click() #to the question history page!
     time.sleep(1)
-    df = pd.DataFrame()
+    df = pd.DataFrame(columns = ['Subject', 'Correct', 'PercentCorrect'])
     for i in range(1,19):
         basePath = '/html/body/div[2]/div[1]/div/div[11]/div/ul[' + str(i) + ']/li'
         wait.until(EC.element_to_be_clickable((By.XPATH, (basePath + '/span[1]')))).click()
@@ -53,7 +53,5 @@ if __name__ == '__main__':
             correctPct = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div[1]/div/div[3]/div[1]/div[1]/span').text[0:-1]
             driver.close()
             driver.switch_to.window(driver.window_handles[0])
-            df2 = pd.DataFrame({'Subject': [topic], 'Correct': [correct], "percentCorrect": [correctPct]})
-            df = pd.concat([df, df2])
-    df = df.reset_index()
+            df.loc[len(df)] = [topic, correct, correctPct]
     print(df)
